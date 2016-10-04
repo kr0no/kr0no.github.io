@@ -1,0 +1,35 @@
+---
+layout: default
+---
+
+{% include header.html %}
+
+<section class="post-list">
+    <div class="container">
+		<h2>blog.</h2>
+        {% for post in site.posts %}
+            <div class="post-preview">
+                <span class="post-title alignable pull-left">
+                    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+                        {{ post.title }}
+                    </a>
+                </span>
+                <span class="post-time alignable pull-right">
+                    <time>{{ post.date | date: '%b %d, %Y '}}</time>
+                </span>
+                <div style="clear:both"></div>
+            </div>
+        {% endfor %}
+    </div>
+	<div class="container">
+		<h2>projects.</h2>
+        {% for project in site.projects %}
+            <div class="post-preview">
+                <span class="post-title alignable pull-left">
+                    <a class="post-link" href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a>: {{project.description}}
+                </span>
+                <div style="clear:both"></div>
+            </div>
+        {% endfor %}
+	</div>
+</section>

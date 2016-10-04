@@ -1,0 +1,32 @@
+# Site info
+title:                  kr0no.me
+description:            ""
+  
+# Author info
+author_name:            kr0no
+email:                  kr0no@ka0labs.net
+github_username:        kr0no
+
+# Site settings
+baseurl:                ""
+permalink:              /post/:year/:month/:title
+timezone:               Europe/Madrid
+
+# Build settings
+highliter:              rouge
+markdown:               kramdown
+encoding:               utf-8
+extensions:             ["no_intra_emphasis", "autolink", "tables"]
+sass:
+    style:              compressed
+exclude:                [ "LICENSE", "README.md", "CNAME", "Gemfile" ]
+
+# Other things
+gems:   
+ - jekyll-redirect-from
+    
+collections:
+    projects:
+        output:         true
+        permalink:      /projects/:title
+
