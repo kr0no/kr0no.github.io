@@ -24,3 +24,4 @@ gem "minima"
 # end
 
 gem 'jekyll-redirect-from'
+gem 'jekyll-minifier'

@@ -1,7 +1,7 @@
 # Site info
 title:                  kr0no.me
-description:            ""
-  
+description:            "Seguridad informática y otras hierbas."
+
 # Author info
 author_name:            kr0no
 email:                  kr0no@ka0labs.net
@@ -18,15 +18,19 @@ markdown:               kramdown
 encoding:               utf-8
 extensions:             ["no_intra_emphasis", "autolink", "tables"]
 sass:
-    style:              compressed
+    style:              compressed 
 exclude:                [ "LICENSE", "README.md", "CNAME", "Gemfile" ]
 
 # Other things
 gems:   
  - jekyll-redirect-from
+ - jekyll-minifier
     
 collections:
     projects:
         output:         true
         permalink:      /projects/:title
 
+# Minifier settings
+jekyll-minifier:
+    exclude:            'feed.xml'

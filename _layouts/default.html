@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% if page.description %}
-        {% assign desc = page.description %}
+        {% assign desc = page.content | strip_html | xml_escape | truncate: 200 %}
     {% else %}
         {% assign desc = site.description %}
     {% endif %}
@@ -23,18 +23,15 @@
         <link rel="icon" type="image/ico" href="{{ site.favicon_location }}">
         <link rel="shortcut-icon" type="image/ico" href="{{ site.favicon_location }}">
     {% endif %}
-    {% if site.twitter_username %}
-        <link rel="author" href="https://twitter.com/{{ site.twitter_username }}">
-    {% endif %}
-    <!-- Twitter -->
+    <link rel="author" href="https://twitter.com/Aitor_FL">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{ site.title }}">
+    <meta name="twitter:title" content="{{ site.title }}{% if page.title %} | {{ page.title }}{% endif %}">
     <meta name="twitter:description" content="{{ desc }}">
-    <meta name="twitter:url" content="{{ url }}">
-    {% if site.twitter_image %}
-        <meta name="twitter:image" content="{{ site.twitter_image }}">
+    <meta name="twitter:url" content="http://kr0no.me{{url}}">
+    {% if page.image %}
+        <meta name="twitter:image" content="http://kr0no.me{{page.image}}">
     {% else %}
-        <meta name="twitter:image" content="{{ site.profile_picture }}">
+        <meta name="twitter:image" content="http://kr0no.me/images/twitter.png">
     {% endif %}
 </head>
 <body>

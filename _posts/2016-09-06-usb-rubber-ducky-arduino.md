@@ -2,6 +2,8 @@
 title: USB Rubber Ducky con Arduino UNO
 layout: post
 date:   2016-10-04
+image: /images/usb-rubber-ducky-arduino/arduino_flash.png
+description: { page.content | strip_html | xml_escape | truncate: 200 }
 ---
 La placa Arduino UNO, en teoría, no tiene la capacidad para actuar como un dispositivo HID, que es la función que necesitamos para poder crear con ella un USB Rubber Ducky. Sin embargo, esta placa tiene dos microcontroladores Arduino, el ATmega328 y el ATmega16u2, siendo este segundo el que nos interesa. Este microcontrolador se puede reprogramar para que funcione como un USB AVR (tal y como lo haría un Arduino Leonardo, por ejemplo), que es lo que nos permitiría emular un dispositivo HID y así crear nuestro propio USB Rubber Ducky.
 
