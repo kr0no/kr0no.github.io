@@ -29,7 +29,7 @@ Como se puede observar en la imagen, utilizaremos la librería "[HID-Project](ht
 Esta librería nos permite utilizar Keyboard.println() para enviar un string seguido de un Enter. Si no quisieramos enviar el Enter final utilizaríamos Keyboard.print().
 Si necesitamos enviar una combinación de teclas, podemos simular que estamos presionándolas con el comando Keyboard.press(), y una vez enviada la combinación soltarlas con el comando Keyboard.releaseAll().
 
-Aquí dejo un .txt con todas las KEY_* disponibles con su respectivo código: [downloads/ducky_keys.txt](http://kr0no.me/post/2016/09/data/keys.txt)
+Aquí dejo un .txt con todas las KEY_* disponibles con su respectivo código: [downloads/ducky_keys.txt](/downloads/ducky_keys.txt)
 
 Solo nos queda conectar el Arduino al equipo en el que lo queremos comprobar y esperar. En este caso parece que funciona a la perfección abriendo la calculadora :P
 
