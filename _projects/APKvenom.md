@@ -1,6 +1,6 @@
 ---
-title: APKvenom
+title: ApkVenom
 description: Auto-backdoor de un APK utilizando payloads de MsfVenom
 ---
 
-{% include redirect.html url="https://github.com/kr0no/APKvenom" %}
+{% include redirect.html url="https://github.com/kr0no/ApkVenom" %}
