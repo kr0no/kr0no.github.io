@@ -1,5 +1,5 @@
 ---
-title: Reprogramando un switch Sonoff para MQTT
+title: Reprogramando un switch Sonoff para MQTT propio
 layout: post
 date:   2017-01-27
 image: /images/reprogramar-sonoff-switch-mqtt/sonoff.jpg
