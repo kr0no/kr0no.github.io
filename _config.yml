@@ -12,13 +12,14 @@ twitter_username: 	Aitor_FL
 github_username:  	kr0no
 
 # Build settings
-theme: 			kr0no.me-theme
 highliter:		rouge
 markdown:		kramdown
 encoding:		utf-8
 
 plugins:
   - jekyll-feed
+
+remote_theme: kr0no/kr0no.me-theme
 
 # Other things
 collections:
