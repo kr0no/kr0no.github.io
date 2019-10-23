@@ -1,9 +1,9 @@
 ---
-title: Reprogramando un switch Sonoff para MQTT propio
 layout: post
+title:  "Reprogramando switch Sonoff para MQTT local"
 date:   2017-01-27
-image: /images/reprogramar-sonoff-switch-mqtt/sonoff.jpg
-description: { page.content | strip_html | xml_escape | truncate: 200 }
+image: "images/reprogramar-sonoff-switch-mqtt/sonoff.jpg"
+description: "Modificación del firmware de los switches wifi Sonoff para utilizarlos con un servidor MQTT local."
 ---
 Los dispositivos Sonoff de ITead nos permiten crear una _"smart home"_ con un coste realmente bajo y de forma muy sencilla, sin embargo, la gestión de estos dispositivos se hace a través de los propios servidores de Sonoff, por lo que estarán constanmente enviando y recibiendo las órdenes desde un lugar que no está bajo nuestro control, y mejor evitar esto, ¿no?
 
@@ -34,7 +34,7 @@ Además necesitaremos usar un fork de la librería PubSubClient que tiene soport
 
 Tras estos pasos ya podremos cargar el nuevo sketch en la placa sin ningún problema:
 
-{% highlight CPP %}
+{% highlight CPP linenos %}
 //Based on a KmanOz work: https://github.com/KmanOz/Sonoff-HomeAssistant/blob/master/arduino/ESPsonoff-v1.01p/ESPsonoff-v1.01p.ino
 
 //Needs PubSubClient with MQTT support: https://github.com/Imroy/pubsubclient

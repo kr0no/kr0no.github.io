@@ -1,42 +1,35 @@
 ---
+title: 
 layout: default
+description: Seguridad informática y otras hierbas.
 ---
-
-{% include header.html %}
-
-<section class="post-list">
-    <div class="container">
-		<h2>blog.</h2>
-        {% for post in site.posts %}
-            <div class="post-preview">
-                <span class="post-title alignable pull-left">
-                    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
-                        {{ post.title }}
-                    </a>
-                </span>
-                <span class="post-time alignable pull-right">
-                    <time>{{ post.date | date: '%b %d, %Y '}}</time>
-                </span>
-                <div style="clear:both"></div>
-            </div>
-        {% endfor %}
+<h2 class="section-title">./blog</h2>
+<div class="post-list">
+{% for post in site.posts %}
+    <div class="post-list-element">
+        <span class="post-list-element-title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
+        <span class="post-list-element-date">{{ post.date | date: '%d %b, %Y' }}</span>
+        <span class="post-list-element-description">{{ post.description }}</span>
     </div>
-	<div class="container">
-		<h2>github.</h2>
-        {% for project in site.projects %}
-            <div class="post-preview">
-                <span class="post-title alignable pull-left">
-                    <a class="post-link" href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a>: {{project.description}}
-                </span>
-                <div style="clear:both"></div>
-            </div>
-        {% endfor %}
-	</div>
-	<div class="container logos">
-		<a href="//ka0labs.net">
-			<img src="images/logo2.png" width="150px" height="150px" />
-			<img src="images/insanity.png" width="150px" height="150px" />
-			<img src="images/ethylic.png" width="150px" height="150px" />
-		</a>
-	<div>
-</section>
+{% endfor %}
+</div>
+
+<div style="clear:both"></div>
+
+<h2 class="section-title">./github</h2>
+<div class="post-list">
+{% for project in site.projects %}
+    <div class="project-element">
+        <span><a href="{{ project.url | prepend: site.baseurl }}">{{ project.title }}</a>:</span> <span class="project-element-description">{{ project.description }}</span>
+    </div>
+{% endfor %}
+</div>
+
+<div style="clear:both"></div>
+<div style="text-align: center; margin: 3em 0;">
+    <a href="//ka0labs.net">
+        <img src="images/logo2.png" width="150px" height="150px" />
+        <img src="images/insanity.png" width="150px" height="150px" />
+        <img src="images/ethylic.png" width="150px" height="150px" />
+    </a>
+</div>

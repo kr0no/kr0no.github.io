@@ -3,7 +3,7 @@ title: USB Rubber Ducky con Arduino UNO
 layout: post
 date:   2016-10-04
 image: /images/usb-rubber-ducky-arduino/arduino_flash.png
-description: { page.content | strip_html | xml_escape | truncate: 200 }
+description: Creación de un teclado virtual malicioso utilizando una placa Arduino UNO. 
 ---
 La placa Arduino UNO, en teoría, no tiene la capacidad para actuar como un dispositivo HID, que es la función que necesitamos para poder crear con ella un USB Rubber Ducky. Sin embargo, esta placa tiene dos microcontroladores Arduino, el ATmega328 y el ATmega16u2, siendo este segundo el que nos interesa. Este microcontrolador se puede reprogramar para que funcione como un USB AVR (tal y como lo haría un Arduino Leonardo, por ejemplo), que es lo que nos permitiría emular un dispositivo HID y así crear nuestro propio USB Rubber Ducky.
 
@@ -25,7 +25,24 @@ Ahora ya tenemos la placa con el nuevo bootloader, pero el propio Arduino IDE no
 
 Una vez Arduino IDE nos reconocé la placa, podemos probar a subir un sketch de prueba y comprobar si lo ejecuta correctamente:
 
-![Arduino IDE](/images/usb-rubber-ducky-arduino/sketch_prueba.png)
+{% highlight CPP linenos %}
+#include "HID-Project.h"
+
+void setup() {
+    Keyboard.begin();
+    delay(500);
+
+    Keyboard.press(KEY_LEFT_GUI);
+    Keyboard.press(KEY_R);
+    Keyboard.releaseAll();
+    delay(500);
+    Keyboard.println("cmd.exe");
+    delay(500);
+    Keyboard.println("calc.exe");
+}
+
+void loop() {}
+{% endhighlight %}
 
 Como se puede observar en la imagen, utilizaremos la librería "[HID-Project](https://github.com/NicoHood/HID)".
 Esta librería nos permite utilizar Keyboard.println() para enviar un string seguido de un Enter. Si no quisieramos enviar el Enter final utilizaríamos Keyboard.print().
