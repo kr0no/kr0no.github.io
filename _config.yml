@@ -1,27 +1,49 @@
-title:			kr0no.me
-email:			kr0no@ka0labs.net
-description: 		"Seguridad informática y otras hierbas."
-timezone:		Europe/Madrid
-url: 			"https://kr0no.me"
-baseurl: 		""
+title: kr0no.me
+author: Aitor F.
+email: kr0no@ka0labs.org
+url: "https://kr0no.me"
+description: >-
+  Aitor Fuentes, a.k.a kr0no.<br />
+  En mis ratos libres, desarrollo videojuegos y cacharreo con cosas.<br />
+  Miembro del Red Team de Telefónica Tech.
 permalink: 		/post/:year/:month/:title
-keywords:		""
+show_excerpts: false
 
-author_name:		kr0no
-twitter_username: 	Aitor_FL
-github_username:  	kr0no
+paginate: 10
+paginate_path: "/blog/page:num/"
 
-# Build settings
-highliter:		rouge
-markdown:		kramdown
-encoding:		utf-8
+tag_permalink_style: pretty
+tag_page_layout: tag_page
+tag_page_dir: tag
+
+dash:
+    date_format: "%d/%m/%Y"
+    animation_speed: 10
+    rtl: false
+    avatar_source: local
+    avatar_path: /images/avatar.jpg
+    social_links:
+        - url: https://twitter.com/Aitor_FL
+          icon: twitter-square
+          color: cyan
+        - url: https://www.linkedin.com/in/aitorfl/
+          icon: linkedin 
+          color: blue
+        - url: https://github.com/kr0no
+          icon: github-square
+          color: purple
+    show_author: true
+
+baseurl: "" 
+
+theme: jekyll-dash
 
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-paginate
+  - jekyll/tagging
 
-remote_theme: kr0no/kr0no.me-theme
-
-# Other things
 collections:
     projects:
         output: 	true

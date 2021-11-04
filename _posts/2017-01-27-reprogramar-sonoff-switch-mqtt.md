@@ -4,6 +4,7 @@ title:  "Reprogramando switch Sonoff para MQTT local"
 date:   2017-01-27
 image: "images/reprogramar-sonoff-switch-mqtt/sonoff.jpg"
 description: "Modificación del firmware de los switches wifi Sonoff para utilizarlos con un servidor MQTT local."
+tags: iot things
 ---
 Los dispositivos Sonoff de ITead nos permiten crear una _"smart home"_ con un coste realmente bajo y de forma muy sencilla, sin embargo, la gestión de estos dispositivos se hace a través de los propios servidores de Sonoff, por lo que estarán constanmente enviando y recibiendo las órdenes desde un lugar que no está bajo nuestro control, y mejor evitar esto, ¿no?
 
