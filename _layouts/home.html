@@ -34,6 +34,7 @@ layout: default
           </div>
         </div>
       {% endfor %}
+      {% include pagination.html %}
     </div>
 <h1>proyectos</h1>
 	<div class="post-links">
@@ -48,9 +49,6 @@ layout: default
 			</div>
 		</div>
 		{% endfor %}
-
-    {% include pagination.html %}
-
     {% include tagcloud.html %}
 {% else %}
 <h2>no posts yet.</h2>
