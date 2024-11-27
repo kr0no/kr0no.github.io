@@ -48,3 +48,5 @@ collections:
     projects:
         output: 	true
         permalink:	/projects/:title
+
+include: [".well-known"]
