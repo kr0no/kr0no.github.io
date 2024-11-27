@@ -1,0 +1,74 @@
+title = 'kr0no.me'
+baseURL = 'https://kr0no.me'
+languageCode = 'es-es'
+theme = 'hugo-blog-awesome'
+defaultContentLanguage = "es-es"
+
+[services]
+  [services.googleAnalytics]
+    id = 'G-L9PMKJLY94'
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+  [markup.goldmark.renderer]
+    unsafe = true
+	[markup.tableOfContents]
+		startLevel = 2
+		endLevel = 4
+		ordered = false
+
+[Languages.es-es.menu]
+[[Languages.es-es.menu.main]]
+    pageRef="/"
+    name = 'Home'
+    url = '/'
+    weight = 10
+
+[[Languages.es-es.menu.main]]
+    pageRef="posts"
+    name = 'Posts'
+    url = '/posts/'
+    weight = 20
+
+[[Languages.es-es.menu.main]]
+    pageRef="cve"
+    name = 'CVEs'
+    url = '/cves/'
+    weight = 40
+
+[Languages.es-es.params]
+    sitename = "kr0no.me"
+    defaultColor = "dark"
+    mainSections = ['posts']
+    toc = false
+    tocOpen = false
+    goToTop = true
+    dateFormat = ""
+    rssFeedDescription = "summary"
+
+[Languages.es-es.params.author]
+    avatar = "avatar.jpg"
+    intro = "kr0no.me"
+    name = "Aitor F. (kr0no)"
+    description = "Aitor Fuentes, a.k.a kr0no.En mis ratos libres desarrollo videojuegos y cacharreo con cosas."
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/kr0no"
+
+[[params.socialIcons]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/aitorfl/"
+
+[[params.socialIcons]]
+name = "bluesky"
+url = "https://bsky.app/profile/kr0no.me"
+
+[[params.socialIcons]]
+name = "x"
+url = "https://x.com/Aitor_FL"
+
+[[params.socialIcons]]
+name = "Rss"
+url = "index.xml"
