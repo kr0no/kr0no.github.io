@@ -29,4 +29,4 @@ gem "kramdown-parser-gfm"
 gem "jekyll-dash", "~> 1"
 gem "jekyll-tagging"
 
-gem "webrick", "~> 1.7"
+gem "webrick", "~> 1.8"
