@@ -51,7 +51,7 @@ defaultContentLanguage = "es-es"
     avatar = "avatar.jpg"
     intro = "kr0no.me"
     name = "Aitor F. (kr0no)"
-    description = "Aitor Fuentes, a.k.a kr0no.En mis ratos libres desarrollo videojuegos y cacharreo con cosas."
+    description = "Aitor Fuentes, a.k.a kr0no. En mis ratos libres desarrollo videojuegos y cacharreo con cosas."
 
 [[params.socialIcons]]
 name = "github"
