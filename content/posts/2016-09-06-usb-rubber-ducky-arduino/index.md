@@ -8,7 +8,7 @@ isStarred: false
 
 La placa Arduino UNO, en teoría, no tiene la capacidad para actuar como un dispositivo HID, que es la función que necesitamos para poder crear con ella un USB Rubber Ducky. Sin embargo, esta placa tiene dos microcontroladores Arduino, el ATmega328 y el ATmega16u2, siendo este segundo el que nos interesa. Este microcontrolador se puede reprogramar para que funcione como un USB AVR (tal y como lo haría un Arduino Leonardo, por ejemplo), que es lo que nos permitiría emular un dispositivo HID y así crear nuestro propio USB Rubber Ducky.
 
-Para conseguir esta función adicional tendremos que flashear un nuevo bootloader llamado HoodLoader2, creado por [NicoHood](http://www.nicohood.de/). El código fuente está disponible en su propio [Github](https://github.com/NicoHood/HoodLoader2).
+Para conseguir esta función adicional tendremos que flashear un nuevo bootloader llamado HoodLoader2, creado por [NicoHood](https://www.nicohood.de/). El código fuente está disponible en su propio [Github](https://github.com/NicoHood/HoodLoader2).
 
 Los pasos para flashear este bootloader empiezan por subir el sketch de instalación al Arduino con el Arduino IDE (podemos descargarlo desde [aquí](https://github.com/NicoHood/HoodLoader2/tree/master/avr/examples/Installation_Sketch)), de forma normal y corriente como haríamos con cualquier otro sketch programado por nososotrs mismos. Una vez hecho esto, necesitaremos hacer un pequeño cableado en la placa para así poder flashear el bootloader automáticamente.
 

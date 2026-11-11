@@ -13,7 +13,7 @@ enableRobotsTXT = true
   [markup.highlight]
     noClasses = false
   [markup.goldmark.renderer]
-    unsafe = true
+    unsafe = false
 	[markup.tableOfContents]
 		startLevel = 2
 		endLevel = 4
