@@ -1,8 +1,9 @@
 title = 'kr0no.me'
 baseURL = 'https://kr0no.me'
-languageCode = 'es-es'
+locale = 'es-es'
 theme = 'hugo-blog-awesome'
 defaultContentLanguage = "es-es"
+enableRobotsTXT = true
 
 [services]
   [services.googleAnalytics]
@@ -34,7 +35,6 @@ defaultContentLanguage = "es-es"
 [[Languages.es-es.menu.main]]
     pageRef="cve"
     name = 'CVEs'
-    url = '/cves/'
     weight = 40
 
 [Languages.es-es.params]
@@ -71,4 +71,4 @@ url = "https://x.com/Aitor_FL"
 
 [[params.socialIcons]]
 name = "Rss"
-url = "index.xml"
+url = "/index.xml"
