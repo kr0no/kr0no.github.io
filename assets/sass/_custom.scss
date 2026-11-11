@@ -1,0 +1,14 @@
+// Site customizations on top of the hugo-blog-awesome theme.
+// The theme imports this file last, so these rules win over its defaults.
+
+// Drop the theme's blue link focus outline and use the browser's default focus ring.
+a:focus {
+  outline: revert;
+  outline-offset: revert;
+}
+
+// Larger author avatar on the home page (theme default: 70px).
+.author .author-avatar {
+  width: 100px;
+  height: 100px;
+}
