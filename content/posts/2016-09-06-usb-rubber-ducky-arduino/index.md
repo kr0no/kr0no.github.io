@@ -10,7 +10,7 @@ La placa Arduino UNO, en teoría, no tiene la capacidad para actuar como un disp
 
 Para conseguir esta función adicional tendremos que flashear un nuevo bootloader llamado HoodLoader2, creado por [NicoHood](https://www.nicohood.de/). El código fuente está disponible en su propio [Github](https://github.com/NicoHood/HoodLoader2).
 
-Los pasos para flashear este bootloader empiezan por subir el sketch de instalación al Arduino con el Arduino IDE (podemos descargarlo desde [aquí](https://github.com/NicoHood/HoodLoader2/tree/master/avr/examples/Installation_Sketch)), de forma normal y corriente como haríamos con cualquier otro sketch programado por nososotrs mismos. Una vez hecho esto, necesitaremos hacer un pequeño cableado en la placa para así poder flashear el bootloader automáticamente.
+Los pasos para flashear este bootloader empiezan por subir el sketch de instalación al Arduino con el Arduino IDE (podemos descargarlo desde [aquí](https://github.com/NicoHood/HoodLoader2/tree/master/avr/examples/Installation_Sketch)), de forma normal y corriente como haríamos con cualquier otro sketch programado por nosotros mismos. Una vez hecho esto, necesitaremos hacer un pequeño cableado en la placa para así poder flashear el bootloader automáticamente.
 
 El esquema de cableado que necesitamos para esto es el siguiente:
 
@@ -24,7 +24,7 @@ Todo el proceso de instalación de HoodLoader2 lo tenemos mucho más detallado e
 
 Ahora ya tenemos la placa con el nuevo bootloader, pero el propio Arduino IDE no lo reconocerá y no nos dejará subir nuestros sketches, por lo que necesitaremos instalar las definicones para las placas con HoodLoader2. Es un proceso realmente sencillo y podemos ver los pasos a seguir aquí: <https://github.com/NicoHood/HoodLoader2/wiki/Software-Installation>.
 
-Una vez Arduino IDE nos reconocé la placa, podemos probar a subir un sketch de prueba y comprobar si lo ejecuta correctamente:
+Una vez Arduino IDE nos reconoce la placa, podemos probar a subir un sketch de prueba y comprobar si lo ejecuta correctamente:
 
 ```c
 #include "HID-Project.h"

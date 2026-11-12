@@ -19,6 +19,16 @@ enableRobotsTXT = true
 		endLevel = 4
 		ordered = false
 
+[Languages.es-es]
+    label = 'Español'
+    locale = 'es-es'
+    weight = 1
+
+[Languages.en]
+    label = 'English'
+    locale = 'en-us'
+    weight = 2
+
 [Languages.es-es.menu]
 [[Languages.es-es.menu.main]]
     pageRef="/"
@@ -33,7 +43,7 @@ enableRobotsTXT = true
     weight = 20
 
 [[Languages.es-es.menu.main]]
-    pageRef="cve"
+    pageRef = "/pages/cve"
     name = 'CVEs'
     weight = 40
 
@@ -48,10 +58,41 @@ enableRobotsTXT = true
     rssFeedDescription = "summary"
 
 [Languages.es-es.params.author]
-    avatar = "avatar.jpg"
+    avatar = "avatar.png"
     intro = "kr0no.me"
     name = "Aitor F. (kr0no)"
     description = "Aitor Fuentes, a.k.a kr0no. En mis ratos libres desarrollo videojuegos y cacharreo con cosas."
+
+[[Languages.en.menu.main]]
+    pageRef = "/"
+    name = 'Home'
+    weight = 10
+
+[[Languages.en.menu.main]]
+    pageRef = "posts"
+    name = 'Posts'
+    weight = 20
+
+[[Languages.en.menu.main]]
+    pageRef = "/pages/cve"
+    name = 'CVEs'
+    weight = 40
+
+[Languages.en.params]
+    sitename = "kr0no.me"
+    defaultColor = "dark"
+    mainSections = ['posts']
+    toc = false
+    tocOpen = false
+    goToTop = true
+    dateFormat = ""
+    rssFeedDescription = "summary"
+
+[Languages.en.params.author]
+    avatar = "avatar.png"
+    intro = "kr0no.me"
+    name = "Aitor F. (kr0no)"
+    description = "Aitor Fuentes, a.k.a kr0no. In my spare time I make video games and tinker with stuff."
 
 [[params.socialIcons]]
 name = "github"
@@ -72,3 +113,7 @@ url = "https://x.com/Aitor_FL"
 [[params.socialIcons]]
 name = "Rss"
 url = "/index.xml"
+[params.umami]
+scriptURL = "https://analytics.securitech.es/script.js"
+websiteID = "bd5ae4be-9abb-448f-bc0e-c41ec6a4dbb0"
+domains = "kr0no.me"

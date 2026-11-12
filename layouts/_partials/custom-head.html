@@ -1,0 +1,6 @@
+{{/* Umami analytics, only in production builds (`hugo`, not `hugo server`). Configured in hugo.toml under [params.umami]. */}}
+{{- with site.Params.umami }}
+{{- if and hugo.IsProduction .scripturl .websiteid }}
+<script defer src="{{ .scripturl }}" data-website-id="{{ .websiteid }}"{{ with .domains }} data-domains="{{ . }}"{{ end }}></script>
+{{- end }}
+{{- end }}
