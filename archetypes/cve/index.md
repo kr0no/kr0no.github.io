@@ -9,18 +9,6 @@ toc: true
 tags: ["cve"]
 ---
 
-Introducción: qué es el producto, qué funcionalidad se ve afectada y por qué merece la pena mirarla.
-
-- **CVE:** CVE-XXXX-XXXXX
-- **Advisory:** 
-- **Producto:** 
-- **Versiones afectadas:** 
-- **Versiones corregidas:** 
-- **Tipo:** CWE-
-- **CVSS:** 
-- **Autenticación:** 
-- **Versión analizada:** 
-
 ## Contexto
 
 ## Causa raíz
@@ -30,8 +18,6 @@ Introducción: qué es el producto, qué funcionalidad se ve afectada y por qué
 ## Explotación
 
 ## Análisis del parche
-
-## Detección
 
 ## Mitigación
 
