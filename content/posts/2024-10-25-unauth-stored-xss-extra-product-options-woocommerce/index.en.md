@@ -4,7 +4,7 @@ date: 2024-10-25
 author: Aitor F.
 description: Technical analysis of CVE-2024-9214, an unauthenticated stored XSS in Extra Product Options Builder for WooCommerce.
 isStarred: false
-draft: true
+draft: false
 toc: true
 tags: ["infosec", "cve", "xss", "wordpress", "woocommerce"]
 # Vulnerability facts: rendered as the summary table at the top of the post
