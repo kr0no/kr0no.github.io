@@ -5,6 +5,7 @@ lastmod: 2016-10-04
 author: Aitor F.
 description: Building a malicious virtual keyboard with an Arduino UNO board.
 isStarred: false
+tags: ["infosec", "hardware", "iot"]
 ---
 
 In theory, the Arduino UNO can't act as an HID device, which is what we need to turn it into a USB Rubber Ducky. However, this board has two microcontrollers, the ATmega328 and the ATmega16u2, and the second one is the one we care about. This microcontroller can be reprogrammed to work as a USB AVR (just like an Arduino Leonardo would, for example), which is what lets us emulate an HID device and build our own USB Rubber Ducky.
