@@ -1,0 +1,26 @@
+{{/* Lista de CVEs o advisories desde data/vulnerabilities.yaml.
+
+     Uso:  {{< vulns kind="cve" >}}  /  {{< vulns kind="advisory" >}}
+
+     Mantiene el formato original de la página (id | CVSS | producto) y añade el
+     enlace al análisis del blog cuando el post existe: en producción las entradas
+     en borrador no resuelven, así que el enlace aparece solo al publicarlas. */}}
+
+{{- $kind := .Get "kind" | default "cve" -}}
+{{- $items := where hugo.Data.vulnerabilities "kind" $kind -}}
+
+{{- with $items }}
+<ul class="vuln-list">
+  {{- range . }}
+  <li>
+    <a href="{{ .url }}">{{ .id }}</a>
+    {{- with .cvss }} <span class="vuln-meta">| CVSS {{ . }}</span>{{ end }}
+    <span class="vuln-meta">| {{ .product }}</span>
+    {{- with .type }} <span class="vuln-meta">| {{ . }}</span>{{ end }}
+    {{- with .post }}
+      {{- with site.GetPage . }} <span class="vuln-meta">| <a href="{{ .RelPermalink }}">{{ T "vulns.writeup" }}</a></span>{{ end }}
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>
+{{- end -}}

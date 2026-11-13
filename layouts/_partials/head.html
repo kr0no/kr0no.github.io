@@ -4,11 +4,12 @@
     {{- partial "meta/main.html" . }}
     {{- hugo.Generator }}
 
-    {{/* Open Graph tags */}}
-    {{ partial "opengraph.html" . }}
+    {{/* Open Graph and Twitter Card tags come from meta/standard.html above.
+         Hugo's built-in opengraph.html / twitter_cards.html partials are deliberately
+         not called here: they emitted a second, conflicting copy of those tags. */}}
 
-    {{/* Twitter Card tags */}}
-    {{ partial "twitter_cards.html" . }}
+    {{/* schema.org structured data */}}
+    {{ partial "schema.html" . }}
 
     {{/* Canonical link, RSS */}}
 

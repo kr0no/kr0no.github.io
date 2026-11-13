@@ -1,11 +1,21 @@
+{{/* Override of the theme partial.
+
+     Emits the whole title / description / Open Graph / Twitter / hreflang set for
+     every page. Hugo's built-in opengraph.html and twitter_cards.html are no longer
+     called from head.html, because they duplicated these tags with different values
+     (two og:title, two og:url and both `es-es` and `es_es` for og:locale). */}}
+
 <meta charset="utf-8">
 <meta http-equiv="content-type" content="text/html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{{/* Override of the theme partial: avoid "kr0no.me | kr0no.me" on the home page
-     (and any page whose title is the site title). */}}
+
+{{- $isHome := or .IsHome (eq .Title .Site.Title) -}}
 {{- $title := printf "%s | %s" .Title .Site.Title -}}
-{{- if or .IsHome (eq .Title .Site.Title) -}}
+{{- if $isHome -}}
   {{- $title = .Site.Title -}}
+  {{- with .Site.Params.titleTagline -}}
+    {{- $title = printf "%s | %s" site.Title . -}}
+  {{- end -}}
 {{- end -}}
 
 <title itemprop="name">{{ $title }}</title>
@@ -13,44 +23,66 @@
 <meta name="twitter:title" content="{{ $title }}" />
 <meta itemprop="name" content="{{ $title }}" />
 <meta name="application-name" content="{{ $title }}" />
-<meta property="og:site_name" content="{{ .Site.Params.sitename }}" />
+<meta property="og:site_name" content="{{ .Site.Params.sitename | default .Site.Title }}" />
 
-{{/*  Define empty variable description  */}}
-{{- $description := "" -}}
-
-{{/*  If description is defined in front matter, use it  */}}
-{{- if .Params.description -}}
-  {{- $description = trim .Params.description "\n" -}}
-{{/*  If description is not defined in front matter, use site description  */}}
-{{- else if .Site.Params.description -}}
-  {{- $description = trim .Site.Params.description "\n" -}}
-{{- end -}}
+{{/* ---- Description: front matter, then the page summary, then the site default ---- */}}
+{{- $description := partial "helpers/description.html" . -}}
 
 <meta name="description" content="{{ $description }}">
 <meta itemprop="description" content="{{ $description }}" />
 <meta property="og:description" content="{{ $description }}" />
 <meta name="twitter:description" content="{{ $description }}" />
 
-<meta property="og:locale" content="{{ .Site.Language.Locale }}" />
+{{/* ---- Indexing ---- */}}
+{{- $noindex := or .Params.noindex (eq .Kind "taxonomy") (eq .Kind "404") -}}
+{{- if $noindex }}
+<meta name="robots" content="noindex, follow" />
+{{- else }}
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+{{- end }}
+
+{{/* ---- Language and translations ---- */}}
+{{- $defaultLang := .Site.Params.defaultLang | default "es-es" -}}
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:locale" content="{{ replace .Site.Language.Locale "-" "_" }}" />
 <meta name="language" content="{{ .Site.Language.Locale }}" />
-{{ range .AllTranslations }}
-  <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.Label }}" />
-{{ end }}
+{{- range .AllTranslations }}
+{{- if ne .Lang $.Lang }}
+<meta property="og:locale:alternate" content="{{ replace .Language.Locale "-" "_" }}" />
+{{- end }}
+{{- end }}
+{{- if .IsTranslated }}
+{{- range .AllTranslations }}
+<link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}" title="{{ .Language.Label }}" />
+{{- if eq .Lang $defaultLang }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+{{- end }}
+{{- end }}
+{{- end }}
 
-{{/*  Define empty variable image  */}}
-{{- $image := "" -}}
+{{/* ---- Page type and social preview image ---- */}}
+{{- if and .IsPage (in .Site.Params.mainSections .Section) }}
+<meta property="og:type" content="article" />
+{{- else }}
+<meta property="og:type" content="website" />
+{{- end }}
 
-{{/*  If image is defined in front matter, use it  */}}
-{{- if .Params.image -}}
-  {{- $image = .Params.image -}}
-{{/*  If image is not defined in front matter, use site ogimage  */}}
-{{- else if .Site.Params.ogimage -}}
-  {{- $image = .Site.Params.ogimage -}}
-{{- end -}}
-
-{{- if $image -}}
-<meta itemprop="image" content="{{ $image | absURL }}" />
-<meta property="og:image" content="{{ $image | absURL }}" />
-<meta name="twitter:image" content="{{ $image | absURL }}" />
-<meta name="twitter:image:src" content="{{ $image | absURL }}" />
-{{- end -}}
+{{- $og := partial "helpers/ogimage.html" . }}
+{{- with $og.url }}
+<meta itemprop="image" content="{{ . }}" />
+<meta property="og:image" content="{{ . }}" />
+<meta name="twitter:image" content="{{ . }}" />
+{{- with $og.width }}
+<meta property="og:image:width" content="{{ . }}" />
+{{- end }}
+{{- with $og.height }}
+<meta property="og:image:height" content="{{ . }}" />
+{{- end }}
+<meta name="twitter:card" content="{{ if and $og.width (ge (div (float $og.width) (math.Max $og.height 1)) 1.5) }}summary_large_image{{ else }}summary{{ end }}" />
+{{- else }}
+<meta name="twitter:card" content="summary" />
+{{- end }}
+{{- with .Site.Params.twitterHandle }}
+<meta name="twitter:site" content="{{ . }}" />
+<meta name="twitter:creator" content="{{ . }}" />
+{{- end }}

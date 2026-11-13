@@ -1,0 +1,18 @@
+{{/* Returns the best description for a page: front matter first, then the page
+     summary for single pages, then the site-wide description. Shared by
+     meta/standard.html and schema.html so both always agree. */}}
+
+{{- $description := "" -}}
+{{- with .Description -}}
+  {{- $description = trim . "\n" -}}
+{{- end -}}
+{{- if and (not $description) .IsPage -}}
+  {{- with .Summary -}}
+    {{- $description = . | plainify | strings.TrimSpace | truncate 160 -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $description -}}
+  {{- $description = .Site.Params.description | default "" -}}
+{{- end -}}
+
+{{- return $description -}}

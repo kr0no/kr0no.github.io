@@ -1,0 +1,18 @@
+## VULNS ##
+- id: "vulns.writeup"
+  translation: "Write-up"
+
+- id: "vuln.id"
+  translation: "Identifier"
+
+- id: "vuln.product"
+  translation: "Product"
+
+- id: "vuln.affected"
+  translation: "Affected versions"
+
+- id: "vuln.fixed"
+  translation: "Fixed in"
+
+- id: "vuln.advisory"
+  translation: "Advisory"

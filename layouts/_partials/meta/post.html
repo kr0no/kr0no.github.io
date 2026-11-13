@@ -1,0 +1,21 @@
+{{/* Override of the theme partial.
+
+     Only the article-specific meta tags live here now: og:type, og:url and the
+     JSON-LD the theme emitted were duplicating what meta/standard.html and
+     schema.html already output, and the theme's paginator block paginated a
+     "blog" section this site does not have. */}}
+
+{{- if and .IsPage (in .Site.Params.mainSections .Section) -}}
+{{- $published := .Date.Format "2006-01-02T15:04:05Z07:00" -}}
+{{- $modified := .Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
+<meta property="article:published_time" content="{{ $published }}" />
+<meta property="article:modified_time" content="{{ $modified }}" />
+<meta property="article:section" content="{{ .Section }}" />
+{{- range .Params.tags }}
+<meta property="article:tag" content="{{ . }}" />
+{{- end }}
+{{- with .Site.Params.author }}
+<meta property="article:author" content="{{ .name }}" />
+<meta name="author" content="{{ .name }}" />
+{{- end }}
+{{- end -}}

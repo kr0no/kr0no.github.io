@@ -4,6 +4,17 @@
     <main class="page-content" aria-label="Content">
         <article>
             <header class="header">
+                {{/* Visible trail matching the BreadcrumbList in _partials/schema.html.
+                     On mobile the whole navbar sits behind the hamburger, so this is the
+                     only link back to the rest of the site for someone arriving from
+                     a search result. The post title below is the trail's last step. */}}
+                {{ if in site.Params.mainSections .Section }}{{ with .Parent }}
+                <nav class="post-meta breadcrumb" aria-label="Breadcrumb">
+                    <a href="{{ site.Home.RelPermalink }}">{{ T "home.home" }}</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </nav>
+                {{ end }}{{ end }}
                 <h1 class="header-title">{{ .Title }}</h1>
                 {{ $configDateFormat := .Site.Params.dateFormat | default "2 Jan 2006" }}
                 {{ with .Date }}
@@ -13,6 +24,7 @@
                 </div>
                 {{ end }}
             </header>
+            {{ partial "vuln-summary.html" . }}
             {{ partial "toc.html" .}}
             <div class="page-content">
                 {{ .Content }}

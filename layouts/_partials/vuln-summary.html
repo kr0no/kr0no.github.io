@@ -1,0 +1,38 @@
+{{/* Ficha de la vulnerabilidad al principio de un post de CVE.
+
+     Se construye con los campos del front matter que define archetypes/cve/index.md
+     (cve, product, affected, fixed, cvss, advisory). Los que estén vacíos no se
+     pintan, así que un post normal no renderiza nada y uno de CVE solo muestra lo
+     que sepamos. Los mismos datos van al JSON-LD en _partials/schema.html. */}}
+
+{{- $rows := slice -}}
+
+{{- with .Params.cve -}}
+  {{- $rows = $rows | append (dict
+    "label" (T "vuln.id")
+    "value" .
+    "url" (printf "https://nvd.nist.gov/vuln/detail/%s" .)) -}}
+{{- end -}}
+{{- with .Params.product }}{{ $rows = $rows | append (dict "label" (T "vuln.product") "value" .) }}{{ end -}}
+{{- with .Params.affected }}{{ $rows = $rows | append (dict "label" (T "vuln.affected") "value" .) }}{{ end -}}
+{{- with .Params.fixed }}{{ $rows = $rows | append (dict "label" (T "vuln.fixed") "value" .) }}{{ end -}}
+{{- with .Params.cvss }}{{ $rows = $rows | append (dict "label" "CVSS" "value" .) }}{{ end -}}
+{{- with .Params.advisory -}}
+  {{/* Último segmento de la URL: en GitHub es el propio identificador del
+       advisory (GHSA-…), más útil como texto del enlace que el dominio. */}}
+  {{- $label := path.Base (urls.Parse .).Path -}}
+  {{- $rows = $rows | append (dict
+    "label" (T "vuln.advisory")
+    "value" (cond (eq $label "/") (urls.Parse .).Host $label)
+    "url" .) -}}
+{{- end -}}
+
+{{- with $rows }}
+<dl class="vuln-summary">
+  {{- range . }}
+  {{- $value := .value }}
+  <dt>{{ .label }}</dt>
+  <dd>{{ with .url }}<a href="{{ . }}">{{ $value }}</a>{{ else }}{{ $value }}{{ end }}</dd>
+  {{- end }}
+</dl>
+{{- end -}}

@@ -1,9 +1,11 @@
 ---
 title: USB Rubber Ducky con Arduino UNO
 date: 2016-10-04
+lastmod: 2016-10-04
 author: Aitor F.
 description: Creación de un teclado virtual malicioso utilizando una placa Arduino UNO.
 isStarred: false
+tags: ["infosec", "hardware", "iot"]
 ---
 
 La placa Arduino UNO, en teoría, no tiene la capacidad para actuar como un dispositivo HID, que es la función que necesitamos para poder crear con ella un USB Rubber Ducky. Sin embargo, esta placa tiene dos microcontroladores Arduino, el ATmega328 y el ATmega16u2, siendo este segundo el que nos interesa. Este microcontrolador se puede reprogramar para que funcione como un USB AVR (tal y como lo haría un Arduino Leonardo, por ejemplo), que es lo que nos permitiría emular un dispositivo HID y así crear nuestro propio USB Rubber Ducky.

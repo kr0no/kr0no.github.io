@@ -7,6 +7,88 @@ a:focus {
   outline-offset: revert;
 }
 
+// Vulnerability summary at the top of a CVE post (layouts/_partials/vuln-summary.html).
+// Hairlines rather than a filled box, matching the h2 rule below; the label column
+// is dimmed with opacity instead of a fixed grey so it works in both themes.
+.vuln-summary {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.45rem 1.5rem;
+  margin: 0 0 2rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid rgba(128, 128, 128, 0.25);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+
+  dt {
+    opacity: 0.65;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  @include media-query($on-mobile) {
+    grid-template-columns: 1fr;
+    gap: 0.1rem 0;
+
+    dd {
+      margin-bottom: 0.6rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Breadcrumb above the post title (layouts/single.html). It also carries the theme's
+// .post-meta class, so its colour follows the post date in both light and dark mode.
+.breadcrumb {
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+    }
+  }
+
+  .breadcrumb-sep {
+    margin: 0 0.4em;
+    opacity: 0.5;
+  }
+}
+
+// In dark mode the theme paints every link inside .page-content blue, with enough
+// specificity to beat the rule above, which would make the trail stand out more
+// than the title. Keep it muted like the date.
+@mixin breadcrumb-dark {
+  .breadcrumb a {
+    color: inherit;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) {
+    @include breadcrumb-dark;
+  }
+}
+
+html.dark {
+  @include breadcrumb-dark;
+}
+
+// Images carry intrinsic width/height attributes (see layouts/_markup/render-image.html)
+// so the browser reserves their space before they load. The theme caps their width with
+// `max-width: 100%` but never relaxes the height, so any image wider than the content
+// column would be stretched to its attribute height; `height: auto` keeps the ratio.
+img {
+  height: auto;
+}
+
 // Smaller, tighter code blocks (theme default: body size, 16px / 1.85).
 pre code {
   font-size: 0.875rem;
@@ -127,4 +209,36 @@ html.dark {
 .author .author-avatar {
   width: 100px;
   height: 100px;
+}
+
+// Hierarchical numbering for the ordered ToC (markup.tableOfContents.ordered):
+// "3.1." instead of the browser's per-level "1.". Each nested <ol> starts its
+// own counter, and counters() joins the whole chain of parent levels. Spacing
+// mirrors the theme's rules for the unordered ToC.
+.toc ol {
+  list-style: none;
+  counter-reset: toc;
+  padding-top: 1rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+
+  li {
+    counter-increment: toc;
+    margin-bottom: 0.5em;
+    line-height: 1.4;
+
+    &::before {
+      content: counters(toc, ".") ". ";
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+
+// Post lists (home and /posts/): the date shares a flex row with the title and
+// the theme lets it shrink, so a long title squeezes "25 oct 2024" onto two
+// lines. Keep it on one line and let the title take the remaining space.
+.post-item .post-item-meta {
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-left: 1rem;
 }

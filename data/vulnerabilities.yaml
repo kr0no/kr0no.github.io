@@ -1,0 +1,45 @@
+# CVEs y advisories publicados. Fuente única para las dos versiones de la página
+# /pages/cve/ (layouts/_shortcodes/vulns.html) y para el ItemList de schema.org
+# (layouts/_partials/schema.html), así que no hay que tocar el contenido en cada idioma.
+#
+# Campos:
+#   id       identificador (CVE-… o GHSA-…)
+#   kind     "cve" o "advisory": separa las dos listas de la página
+#   url      entrada oficial (NVD para CVEs, GitHub para advisories)
+#   product  producto afectado
+#   cvss     puntuación CVSS (opcional)
+#   type     tipo de vulnerabilidad (opcional)
+#   post     ruta del análisis en el blog (opcional, sin prefijo de idioma).
+#            El enlace solo aparece cuando la página existe y está publicada.
+
+- id: CVE-2025-67535
+  kind: cve
+  url: https://nvd.nist.gov/vuln/detail/CVE-2025-67535
+  product: WordPress WP Maps
+  cvss: 6.6
+
+- id: CVE-2024-9849
+  kind: cve
+  url: https://nvd.nist.gov/vuln/detail/CVE-2024-9849
+  product: Real 3D FlipBook WordPress Plugin
+  cvss: 8.8
+
+- id: CVE-2024-9214
+  kind: cve
+  url: https://nvd.nist.gov/vuln/detail/CVE-2024-9214
+  product: Extra Product Options Builder for WooCommerce
+  cvss: 6.1
+  post: /posts/2024-10-25-unauth-stored-xss-extra-product-options-woocommerce
+
+- id: CVE-2018-15641
+  kind: cve
+  url: https://nvd.nist.gov/vuln/detail/CVE-2018-15641
+  product: Odoo Enterprise/Community
+  cvss: 6.3
+
+- id: GHSA-wc63-5fg7-7r49
+  kind: advisory
+  url: https://github.com/payloadcms/payload/security/advisories/GHSA-wc63-5fg7-7r49
+  product: Payload CMS
+  type: SSRF
+  post: /posts/2026-11-12-ssrf-payload-cms

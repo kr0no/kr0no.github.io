@@ -1,9 +1,11 @@
 ---
 title: Reflashing a Sonoff switch for local MQTT
 date: 2017-01-27
+lastmod: 2017-01-27
 author: Aitor F.
 description: Modifying the firmware of Sonoff wifi switches to use them with a local MQTT server.
 isStarred: false
+tags: ["hardware", "iot"]
 ---
 
 ITead's Sonoff devices let us build a _"smart home"_ really cheaply and very easily. However, these devices are managed through Sonoff's own servers, so they're constantly sending and receiving commands from a place that isn't under our control, and it's better to avoid that, right?

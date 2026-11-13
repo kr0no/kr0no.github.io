@@ -1,0 +1,184 @@
+{{/* schema.org JSON-LD, emitted as a single @graph per page.
+
+     Describes the author (Person), the site (WebSite) and the page itself:
+     TechArticle for CVE write-ups, BlogPosting for the rest of the posts,
+     CollectionPage for listings. Search engines and AI answer engines use this
+     to attribute the content and to link a post to the CVE it analyses.
+     Pages marked noindex get no structured data. */}}
+
+{{- $noindex := or .Params.noindex (eq .Kind "taxonomy") (eq .Kind "404") -}}
+{{- if not $noindex -}}
+
+{{- $author := .Site.Params.author -}}
+{{- $personID := printf "%s#person" .Site.Home.Permalink -}}
+{{- $siteID := printf "%s#website" .Site.Home.Permalink -}}
+{{- $lang := .Site.Language.Locale -}}
+{{- $description := partial "helpers/description.html" . -}}
+{{- $og := partial "helpers/ogimage.html" . -}}
+
+{{/* ---- Person ---- */}}
+{{- $sameAs := slice -}}
+{{- range .Site.Params.socialIcons -}}
+  {{- if not (in (slice "rss" "email") (lower .name)) -}}
+    {{- $sameAs = $sameAs | append .url -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $person := dict
+  "@type" "Person"
+  "@id" $personID
+  "name" ($author.fullName | default $author.name)
+  "url" .Site.Home.Permalink
+-}}
+{{- with $author.alternateName }}{{ $person = merge $person (dict "alternateName" .) }}{{ end -}}
+{{- with $author.jobTitle }}{{ $person = merge $person (dict "jobTitle" .) }}{{ end -}}
+{{- with $author.description }}{{ $person = merge $person (dict "description" .) }}{{ end -}}
+{{- with .Site.Params.knowsAbout }}{{ $person = merge $person (dict "knowsAbout" .) }}{{ end -}}
+{{- if $sameAs }}{{ $person = merge $person (dict "sameAs" $sameAs) }}{{ end -}}
+{{- with resources.Get ($author.avatar | default "avatar.png") -}}
+  {{- $person = merge $person (dict "image" .Permalink) -}}
+{{- end -}}
+
+{{/* ---- WebSite ---- */}}
+{{- $website := dict
+  "@type" "WebSite"
+  "@id" $siteID
+  "url" .Site.Home.Permalink
+  "name" .Site.Title
+  "inLanguage" $lang
+  "author" (dict "@id" $personID)
+  "publisher" (dict "@id" $personID)
+-}}
+{{- with .Site.Params.description }}{{ $website = merge $website (dict "description" .) }}{{ end -}}
+
+{{- $graph := slice $person $website -}}
+
+{{/* ---- The page itself ---- */}}
+{{- if and .IsPage (in .Site.Params.mainSections .Section) -}}
+
+  {{- $isCVE := or .Params.cve (in (apply (.Params.tags | default slice) "lower" ".") "cve") -}}
+  {{- $page := dict
+    "@type" (cond $isCVE "TechArticle" "BlogPosting")
+    "@id" (printf "%s#article" .Permalink)
+    "headline" (.Title | truncate 110)
+    "name" .Title
+    "url" .Permalink
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "isPartOf" (dict "@id" $siteID)
+    "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+    "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+    "inLanguage" $lang
+    "articleSection" (cond (ne .Parent nil) .Parent.Title .Section)
+    "wordCount" .WordCount
+    "author" (dict "@id" $personID)
+    "publisher" (dict "@id" $personID)
+  -}}
+  {{- with $description }}{{ $page = merge $page (dict "description" .) }}{{ end -}}
+  {{- with $og.url }}{{ $page = merge $page (dict "image" .) }}{{ end -}}
+  {{- with .Params.tags }}{{ $page = merge $page (dict "keywords" .) }}{{ end -}}
+
+  {{/* A write-up is about the vulnerability it analyses: link the identifier to its
+       NVD entry so engines can resolve the entity, and carry the same facts the
+       summary box shows (_partials/vuln-summary.html) as additionalProperty, which
+       is the standard way to express attributes schema.org has no property for.
+       With no CVE assigned yet, the advisory's own id (GHSA-…) identifies it, so a
+       write-up published before the CVE lands is still described. */}}
+  {{- $id := .Params.cve -}}
+  {{- with .Params.advisory -}}
+    {{- if not $id }}{{ $id = path.Base (urls.Parse .).Path }}{{ end -}}
+  {{- end -}}
+  {{- with $id -}}
+    {{- $sameAs := slice -}}
+    {{- with $.Params.cve }}{{ $sameAs = $sameAs | append (printf "https://nvd.nist.gov/vuln/detail/%s" .) }}{{ end -}}
+    {{- with $.Params.advisory }}{{ $sameAs = $sameAs | append . }}{{ end -}}
+
+    {{- $props := slice -}}
+    {{- with $.Params.product }}{{ $props = $props | append (dict "@type" "PropertyValue" "name" (T "vuln.product") "value" .) }}{{ end -}}
+    {{- with $.Params.affected }}{{ $props = $props | append (dict "@type" "PropertyValue" "name" (T "vuln.affected") "value" .) }}{{ end -}}
+    {{- with $.Params.fixed }}{{ $props = $props | append (dict "@type" "PropertyValue" "name" (T "vuln.fixed") "value" .) }}{{ end -}}
+    {{- with $.Params.cvss }}{{ $props = $props | append (dict "@type" "PropertyValue" "name" "CVSS" "value" .) }}{{ end -}}
+
+    {{- $vuln := dict
+      "@type" "Thing"
+      "name" $id
+      "identifier" $id
+      "sameAs" $sameAs
+    -}}
+    {{- with $.Params.product }}{{ $vuln = merge $vuln (dict "description" .) }}{{ end -}}
+    {{- if $props }}{{ $vuln = merge $vuln (dict "additionalProperty" $props) }}{{ end -}}
+    {{- $page = merge $page (dict "about" $vuln) -}}
+  {{- end -}}
+
+  {{- $graph = $graph | append $page -}}
+
+  {{/* ---- Breadcrumbs: Home > Posts > this post ---- */}}
+  {{- $items := slice (dict "@type" "ListItem" "position" 1 "name" (T "home.home") "item" .Site.Home.Permalink) -}}
+  {{- with .Parent -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" 2 "name" .Title "item" .Permalink) -}}
+  {{- end -}}
+  {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" .Title "item" .Permalink) -}}
+  {{- $graph = $graph | append (dict
+    "@type" "BreadcrumbList"
+    "@id" (printf "%s#breadcrumb" .Permalink)
+    "itemListElement" $items) -}}
+
+{{- else if not .IsHome -}}
+
+  {{- $collection := dict
+    "@type" "CollectionPage"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Title
+    "inLanguage" $lang
+    "isPartOf" (dict "@id" $siteID)
+  -}}
+  {{- with $description }}{{ $collection = merge $collection (dict "description" .) }}{{ end -}}
+
+  {{/* A page can expose a data file as a schema.org ItemList with
+       `itemList: <name>` in its front matter (see content/pages/cve.md and
+       data/vulnerabilities.yaml). Each entry becomes an identifiable Thing, so an
+       engine can read the CVEs as data instead of parsing the rendered list. */}}
+  {{- with .Params.itemList -}}
+    {{- $data := index hugo.Data . -}}
+    {{- $listID := printf "%s#itemlist" $.Permalink -}}
+    {{- $elements := slice -}}
+    {{- range $i, $v := $data -}}
+      {{- $detail := $v.product -}}
+      {{- with $v.cvss }}{{ $detail = printf "%s — CVSS %v" $detail . }}{{ end -}}
+      {{- with $v.type }}{{ $detail = printf "%s — %s" $detail . }}{{ end -}}
+      {{- $thing := dict
+        "@type" "Thing"
+        "name" $v.id
+        "identifier" $v.id
+        "description" $detail
+        "sameAs" (slice $v.url)
+      -}}
+      {{- with $v.post -}}
+        {{- with site.GetPage . -}}
+          {{- $thing = merge $thing (dict "subjectOf" (dict "@id" (printf "%s#article" .Permalink))) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $elements = $elements | append (dict
+        "@type" "ListItem"
+        "position" (add $i 1)
+        "url" $v.url
+        "item" $thing) -}}
+    {{- end -}}
+    {{- if $elements -}}
+      {{- $graph = $graph | append (dict
+        "@type" "ItemList"
+        "@id" $listID
+        "name" $.Title
+        "numberOfItems" (len $elements)
+        "itemListOrder" "https://schema.org/ItemListUnordered"
+        "itemListElement" $elements) -}}
+      {{- $collection = merge $collection (dict "mainEntity" (dict "@id" $listID)) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $graph = $graph | append $collection -}}
+
+{{- end -}}
+
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" $graph | jsonify | safeJS }}</script>
+{{- end -}}

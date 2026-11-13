@@ -1,0 +1,68 @@
+{{/* Image render hook: serves WebP at the sizes the layout actually uses, and
+     always emits width/height so the browser reserves the space before the image
+     loads (no layout shift).
+
+     - Page-bundle images are resized to the 660px content column (1x) and 1320px
+       (2x), never upscaled beyond the original.
+     - GIF and SVG are passed through untouched: re-encoding an animated GIF would
+       keep only its first frame.
+     - The first image of a page loads eagerly (it is usually the LCP element);
+       the rest are lazy.
+     - Remote or unresolvable sources fall back to a plain <img>. */}}
+
+{{- $src := .Destination | strings.TrimPrefix "./" -}}
+{{- $alt := .PlainText -}}
+{{- $title := .Title -}}
+{{- $isFirst := eq .Ordinal 0 -}}
+{{- $loading := cond $isFirst "eager" "lazy" -}}
+
+{{/* Column width in assets/sass (narrow-size 720px minus 2x30px padding). */}}
+{{- $displayWidth := 660 -}}
+
+{{- $img := "" -}}
+{{- if not (urls.Parse $src).IsAbs -}}
+  {{- with .PageInner.Resources.GetMatch $src -}}
+    {{- $img = . -}}
+  {{- else -}}
+    {{- with resources.Get $src -}}
+      {{- $img = . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and $img (not (in (slice "gif" "svg") $img.MediaType.SubType)) -}}
+  {{- $w1 := int (math.Min $displayWidth $img.Width) -}}
+  {{- $w2 := int (math.Min (mul $displayWidth 2) $img.Width) -}}
+  {{- $x1 := $img.Resize (printf "%dx webp q82" $w1) -}}
+  <img
+    src="{{ $x1.RelPermalink }}"
+    {{- if gt $w2 $w1 }}
+    {{- $x2 := $img.Resize (printf "%dx webp q82" $w2) }}
+    srcset="{{ $x1.RelPermalink }} 1x, {{ $x2.RelPermalink }} 2x"
+    {{- end }}
+    sizes="(max-width: 720px) 100vw, {{ $displayWidth }}px"
+    width="{{ $x1.Width }}"
+    height="{{ $x1.Height }}"
+    alt="{{ $alt }}"
+    {{- with $title }} title="{{ . }}"{{ end }}
+    loading="{{ $loading }}"
+    decoding="async"
+    {{- if $isFirst }} fetchpriority="high"{{ end }}>
+{{- else -}}
+  {{/* Bundle resources keep their own URL; anything unresolved is used verbatim. */}}
+  {{- $url := $src -}}
+  {{- with $img }}{{ $url = .RelPermalink }}{{ end }}
+  <img
+    src="{{ $url | safeURL }}"
+    {{- with $img }}
+    {{- if and .Width .Height }}
+    width="{{ .Width }}"
+    height="{{ .Height }}"
+    {{- end }}
+    {{- end }}
+    alt="{{ $alt }}"
+    {{- with $title }} title="{{ . }}"{{ end }}
+    loading="{{ $loading }}"
+    decoding="async"
+    {{- if $isFirst }} fetchpriority="high"{{ end }}>
+{{- end -}}

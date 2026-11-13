@@ -1,6 +1,7 @@
 ---
 title: USB Rubber Ducky with an Arduino UNO
 date: 2016-10-04
+lastmod: 2016-10-04
 author: Aitor F.
 description: Building a malicious virtual keyboard with an Arduino UNO board.
 isStarred: false

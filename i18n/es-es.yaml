@@ -25,3 +25,22 @@
 
 - id: "errors.404_description"
   translation: "La ruta no existe."
+
+## VULNS ##
+- id: "vulns.writeup"
+  translation: "Análisis"
+
+- id: "vuln.id"
+  translation: "Identificador"
+
+- id: "vuln.product"
+  translation: "Producto"
+
+- id: "vuln.affected"
+  translation: "Versiones afectadas"
+
+- id: "vuln.fixed"
+  translation: "Corregido en"
+
+- id: "vuln.advisory"
+  translation: "Advisory"

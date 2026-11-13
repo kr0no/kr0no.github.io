@@ -1,0 +1,97 @@
+{{/* Returns the social preview image for a page as a dict (url, width, height).
+
+     - A page's own `image` front matter wins (page resource or site-relative path).
+     - Posts and other inner pages get a 1200x630 card generated at build time:
+       brand row on top, post title set in Nexa Heavy below, wrapped to fit.
+     - The home page keeps the plain avatar card.
+
+     Everything is drawn from assets/avatar.png: resizing it to the brand mark and
+     padding it out to 1200x630 gives a flat canvas in the site's dark background,
+     with the avatar already in place, and no second image to maintain. */}}
+
+{{- $url := "" -}}
+{{- $width := 0 -}}
+{{- $height := 0 -}}
+
+{{/* ---- Card geometry and type ---- */}}
+{{- $W := 1200 -}}
+{{- $H := 630 -}}
+{{- $pad := 72 -}}
+{{- $bg := "#131418" -}}
+{{- $fg := "#f2f3f5" -}}
+{{- $muted := "#8b97a3" -}}
+{{- $mark := 72 -}}
+{{- $titleSize := 58 -}}
+{{- $titleLead := 18 -}}
+{{- $titleMiddle := 379 -}}
+{{- $maxChars := 30 -}}
+{{- $maxLines := 4 -}}
+
+{{- $avatar := resources.Get (site.Params.author.avatar | default "avatar.png") -}}
+{{- $font := resources.Get "Nexa-Heavy.ttf" -}}
+
+{{- $custom := .Params.image -}}
+
+{{- if $custom -}}
+  {{- $res := .Resources.GetMatch $custom -}}
+  {{- if $res -}}
+    {{- $url = $res.Permalink -}}
+    {{- $width = $res.Width -}}
+    {{- $height = $res.Height -}}
+  {{- else -}}
+    {{- $url = $custom | absURL -}}
+  {{- end -}}
+
+{{- else if and $avatar $font (not .IsHome) -}}
+  {{/* ---- Wrap the title to $maxChars per line ---- */}}
+  {{- $lines := slice -}}
+  {{- $cur := "" -}}
+  {{- range (split .Title " ") -}}
+    {{- $candidate := cond (eq $cur "") . (print $cur " " .) -}}
+    {{- if and (gt (strings.RuneCount $candidate) $maxChars) (ne $cur "") -}}
+      {{- $lines = $lines | append $cur -}}
+      {{- $cur = . -}}
+    {{- else -}}
+      {{- $cur = $candidate -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $cur }}{{ $lines = $lines | append . }}{{ end -}}
+  {{- if gt (len $lines) $maxLines -}}
+    {{- $keep := sub $maxLines 1 -}}
+    {{- $lines = (first $keep $lines) | append (printf "%s…" (index $lines $keep)) -}}
+  {{- end -}}
+
+  {{/* ---- Canvas: the avatar at the brand position, padded out to 1200x630 ---- */}}
+  {{- $canvas := ($avatar.Resize (printf "%dx%d png" $mark $mark)).Filter
+      (images.Padding $pad (sub $W $pad $mark) (sub $H $pad $mark) $pad $bg) -}}
+
+  {{/* The title block is centred on $titleMiddle, the middle of the space left
+       under the brand row, so cards stay balanced whatever the title's length. */}}
+  {{- $card := $canvas.Filter
+      (images.Text site.Title (dict
+        "x" (add $pad $mark 24)
+        "y" (add $pad 22)
+        "size" 30
+        "color" $muted
+        "font" $font))
+      (images.Text (delimit $lines "\n") (dict
+        "x" $pad
+        "y" (sub $titleMiddle (div (mul (len $lines) (add $titleSize $titleLead)) 2))
+        "size" $titleSize
+        "linespacing" $titleLead
+        "color" $fg
+        "font" $font)) -}}
+
+  {{- $url = $card.Permalink -}}
+  {{- $width = $card.Width -}}
+  {{- $height = $card.Height -}}
+
+{{- else if $avatar -}}
+  {{/* ---- Home page: avatar centred on the dark background ---- */}}
+  {{- $card := ($avatar.Resize "500x500 png").Filter (images.Padding 65 350 $bg) -}}
+  {{- $url = $card.Permalink -}}
+  {{- $width = $card.Width -}}
+  {{- $height = $card.Height -}}
+{{- end -}}
+
+{{- return (dict "url" $url "width" $width "height" $height) -}}
